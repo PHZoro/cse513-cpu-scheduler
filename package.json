@@ -1,0 +1,9 @@
+{
+  "name": "cpu-scheduling-simulator",
+  "version": "1.0.0",
+  "description": "Browser-based CPU scheduling simulator (FCFS, SJF, SRTF, Round Robin) for CSE513 Assignment 1.",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}

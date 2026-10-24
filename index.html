@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPU Scheduling Simulator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>CPU Scheduling Simulator</h1>
+    <p class="subtitle">FCFS, SJF (non-preemptive), SRTF (preemptive) and Round Robin on a single CPU.</p>
+  </header>
+
+  <main>
+    <form id="sim-form" novalidate>
+      <section class="card" aria-labelledby="processes-title">
+        <div class="card-head">
+          <h2 id="processes-title">1. Processes</h2>
+          <div class="button-row">
+            <button type="button" id="load-a">Load Workload A</button>
+            <button type="button" id="load-b">Load Workload B</button>
+            <button type="button" id="clear-all" class="secondary">Clear all</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="process-table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Process ID</th>
+                <th scope="col">Arrival time</th>
+                <th scope="col">CPU burst</th>
+                <th scope="col"><span class="visually-hidden">Remove</span></th>
+              </tr>
+            </thead>
+            <tbody id="process-rows"></tbody>
+          </table>
+        </div>
+        <p id="empty-hint" class="hint" hidden>No processes yet. Add one or load an example workload.</p>
+        <button type="button" id="add-process">+ Add process</button>
+      </section>
+
+      <section class="card" aria-labelledby="settings-title">
+        <h2 id="settings-title">2. Algorithm</h2>
+        <div class="settings">
+          <label>
+            Scheduling algorithm
+            <select id="algorithm"></select>
+          </label>
+          <label>
+            Time quantum (Round Robin)
+            <input id="quantum" type="text" inputmode="numeric" value="2" size="4">
+          </label>
+        </div>
+        <div class="button-row">
+          <button type="submit" class="primary">Run simulation</button>
+          <button type="button" id="compare">Compare all algorithms</button>
+        </div>
+        <div id="errors" class="errors" role="alert" hidden></div>
+      </section>
+    </form>
+
+    <section id="results" class="card" aria-labelledby="results-title" hidden>
+      <h2 id="results-title">3. Results</h2>
+      <p id="stale" class="stale" hidden>Inputs changed since this run. Run the simulation again to update the results.</p>
+      <p id="run-summary" class="run-summary"></p>
+
+      <h3>Gantt chart</h3>
+      <div id="gantt" class="gantt" role="img"></div>
+      <p class="timeline-text" id="timeline-text"></p>
+
+      <h3>Per-process results</h3>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th scope="col">Process</th>
+              <th scope="col">Arrival</th>
+              <th scope="col">CPU burst</th>
+              <th scope="col">First start</th>
+              <th scope="col">Completion</th>
+              <th scope="col">Turnaround</th>
+              <th scope="col">Waiting</th>
+              <th scope="col">Response</th>
+            </tr>
+          </thead>
+          <tbody id="result-rows"></tbody>
+          <tfoot id="result-averages"></tfoot>
+        </table>
+      </div>
+      <p class="hint">Turnaround = Completion − Arrival · Waiting = Turnaround − CPU burst · Response = First start − Arrival</p>
+
+      <h3>Correctness checks</h3>
+      <div id="checks"></div>
+
+      <details>
+        <summary>Scheduling decisions (step by step)</summary>
+        <ol id="decision-log" class="decision-log"></ol>
+      </details>
+    </section>
+
+    <section id="comparison" class="card" aria-labelledby="comparison-title" hidden>
+      <h2 id="comparison-title">Comparison of all algorithms</h2>
+      <p id="stale-comparison" class="stale" hidden>Inputs changed since this comparison. Run it again to update.</p>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th scope="col">Algorithm</th>
+              <th scope="col">Avg. turnaround</th>
+              <th scope="col">Avg. waiting</th>
+              <th scope="col">Avg. response</th>
+              <th scope="col">Schedule</th>
+            </tr>
+          </thead>
+          <tbody id="comparison-rows"></tbody>
+        </table>
+      </div>
+      <p class="hint">Lowest value in each column is highlighted.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>This simulator models scheduling policies. It does not reproduce a real operating system's scheduler.</p>
+  </footer>
+
+  <script src="src/scheduler.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
